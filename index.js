@@ -21,8 +21,11 @@ async function run() {
   try {
     await client.connect();
     const userCollection = client.db("epicurious").collection("users");
-    const user = { name: "test2", email: "test2@exmail.com" };
-    const result = userCollection.insertOne(user);
+
+    app.get("/users", (req, res) => {
+      const users = JSON.stringify(userCollection);
+      res.send(users);
+    });
   } finally {
     // await client.close();
   }
