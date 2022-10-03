@@ -20,10 +20,12 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
-    const userCollection = client.db("epicurious").collection("users");
+    const usersCollection = client.db("epicurious").collection("users");
 
-    app.get("/users", (req, res) => {
-      const users = JSON.stringify(userCollection);
+    app.get("/users", async (req, res) => {
+      const query = {};
+      const cursor = usersCollection.find(query);
+      const users = await cursor.toArray();
       res.send(users);
     });
   } finally {
