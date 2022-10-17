@@ -20,9 +20,24 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
-    const userCollection = client.db("epicurious").collection("users");
-    const user = { name: "test2", email: "test2@exmail.com" };
-    const result = userCollection.insertOne(user);
+    const videoDataCollection = client.db("epicurious").collection("videoData");
+    const bestOfEpidataCollection = client
+      .db("epicurious")
+      .collection("bestOfEpiData");
+
+    app.get("/videoData", async (req, res) => {
+      const query = {};
+      const cursor = videoDataCollection.find(query);
+      const videoData = await cursor.toArray();
+      res.send(videoData);
+    });
+
+    app.get("/bestOfEpiData", async (req, res) => {
+      const query = {};
+      const cursor = bestOfEpidataCollection.find(query);
+      const bestOfEpiData = await cursor.toArray();
+      res.send(bestOfEpiData);
+    });
   } finally {
     // await client.close();
   }
