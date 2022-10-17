@@ -20,13 +20,23 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
-    const usersCollection = client.db("epicurious").collection("users");
+    const videoDataCollection = client.db("epicurious").collection("videoData");
+    const bestOfEpidataCollection = client
+      .db("epicurious")
+      .collection("bestOfEpiData");
 
-    app.get("/users", async (req, res) => {
+    app.get("/videoData", async (req, res) => {
       const query = {};
-      const cursor = usersCollection.find(query);
-      const users = await cursor.toArray();
-      res.send(users);
+      const cursor = videoDataCollection.find(query);
+      const videoData = await cursor.toArray();
+      res.send(videoData);
+    });
+
+    app.get("/bestOfEpiData", async (req, res) => {
+      const query = {};
+      const cursor = bestOfEpidataCollection.find(query);
+      const bestOfEpiData = await cursor.toArray();
+      res.send(bestOfEpiData);
     });
   } finally {
     // await client.close();
